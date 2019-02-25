@@ -1,0 +1,153 @@
+\documentclass{aiaa-tc}
+\usepackage{graphicx}
+
+\usepackage{amsmath}
+\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
+\newcommand*{\ZZ}{%
+  \textsf{Z\kern-1ex Z}%
+}
+
+\begin{document}
+
+\section{1.d Multistate Logic}
+A combination of n binary digits (bits), can represent $2^n$ unique numbers. In this case, this system represents the set $ \{ x \in \ZZ | 0 \leq x < 2^n \} $.
+In the first section, the application of a set of operations, on this system is analysed. Later, the system is expanded by a special "Undefined" token. The analysis of
+these 2 Systems, is then transferred to bigger combinations of bits.
+
+\subsection{Operations}
+\begin{itemize}
+    \item AND: An and Operation on 2 binary numbers, can be performed bitwise, which for any 2 n digit binary numbers, yields a n digit number as a result
+    \item OR: Similarly to the AND operation, the OR operation can be performed bitwise, to yield a number in the range of $[0, 2^n]$
+    \item XOR: The XOR operation of 2 bits, yields 1 if only one of the inputs is 1 and otherwise yields 0
+    \item NOT: A NOT Operation is usually performed to incert a single bit, for a comparison of 2 numbers, the Operation is performed as NOT EQUAL
+    \item ADD: The ADD Operation, adds the 2 numbers and truncates them to the last 3 bits, which are represented by the bit sequence
+    \item SUB: The SUB Operation, subtracts the 2nd number from the 1st and truncates them to the last 3 bits, which are represented by the bit sequence
+    \item MUL: The MUL Operation, multiplies the 2 numbers and truncates them to the last 3 bits, which are represented by the bit sequence
+    \item DIV: The DIV Operation, diviedes the 1st number by the 2nd and truncates them to the last 3 bits, which are represented by the bit sequence
+\end{itemize}
+
+% \subsection{Truth Table}
+% \begin{center}
+%     \begin{tabular}{ |c|c|c|c|c|c|c|c|c|c| }
+%     \hline
+%     1 & 2 & AND & OR & XOR & NOT & ADD & SUB & MUL & DIV  \\ \hline \hline
+%     000 & 000 & 000 & 000 & 000 & 000 & 000 & 000 & 000 & Divide by zero\\ \hline
+%     000 & 001 & 000 & 001 & 001 & 001 & 001 & 111 & 000 & 000\\ \hline
+%     000 & 010 & 000 & 010 & 010 & 001 & 010 & 110 & 000 & 000\\ \hline
+%     000 & 011 & 000 & 011 & 011 & 001 & 011 & 101 & 000 & 000\\ \hline
+%     000 & 100 & 000 & 100 & 100 & 001 & 100 & 100 & 000 & 000\\ \hline
+%     000 & 101 & 000 & 101 & 101 & 001 & 101 & 011 & 000 & 000\\ \hline
+%     000 & 110 & 000 & 110 & 110 & 001 & 110 & 010 & 000 & 000\\ \hline
+%     000 & 111 & 000 & 111 & 111 & 001 & 111 & 001 & 000 & 000\\ \hline
+%     001 & 000 & 000 & 001 & 001 & 001 & 001 & 001 & 000 & Divide by zero\\ \hline
+%     001 & 001 & 001 & 001 & 000 & 000 & 010 & 000 & 001 & 001\\ \hline
+%     001 & 010 & 000 & 011 & 011 & 001 & 011 & 111 & 010 & 000\\ \hline
+%     001 & 011 & 001 & 011 & 010 & 001 & 100 & 110 & 011 & 000\\ \hline
+%     001 & 100 & 000 & 101 & 101 & 001 & 101 & 101 & 100 & 000\\ \hline
+%     001 & 101 & 001 & 101 & 100 & 001 & 110 & 100 & 101 & 000\\ \hline
+%     001 & 110 & 000 & 111 & 111 & 001 & 111 & 011 & 110 & 000\\ \hline
+%     001 & 111 & 001 & 111 & 110 & 001 & 000 & 010 & 111 & 000\\ \hline
+% \end{tabular}
+% \end{center}
+
+% \begin{center}
+%     \begin{tabular}{ |c|c|c|c|c|c|c|c|c|c| }
+%     \hline
+%     1 & 2 & AND & OR & XOR & NOT & ADD & SUB & MUL & DIV  \\ \hline \hline
+%     010 & 000 & 000 & 010 & 010 & 001 & 010 & 010 & 000 & Divide by zero\\ \hline
+%     010 & 001 & 000 & 011 & 011 & 001 & 011 & 001 & 010 & 010\\ \hline
+%     010 & 010 & 010 & 010 & 000 & 000 & 100 & 000 & 100 & 001\\ \hline
+%     010 & 011 & 010 & 011 & 001 & 001 & 101 & 111 & 110 & 000\\ \hline
+%     010 & 100 & 000 & 110 & 110 & 001 & 110 & 110 & 000 & 000\\ \hline
+%     010 & 101 & 000 & 111 & 111 & 001 & 111 & 101 & 010 & 000\\ \hline
+%     010 & 110 & 010 & 110 & 100 & 001 & 000 & 100 & 100 & 000\\ \hline
+%     010 & 111 & 010 & 111 & 101 & 001 & 001 & 011 & 110 & 000\\ \hline
+%     011 & 000 & 000 & 011 & 011 & 001 & 011 & 011 & 000 & Divide by zero\\ \hline
+%     011 & 001 & 001 & 011 & 010 & 001 & 100 & 010 & 011 & 011\\ \hline
+%     011 & 010 & 010 & 011 & 001 & 001 & 101 & 001 & 110 & 001\\ \hline
+%     011 & 011 & 011 & 011 & 000 & 000 & 110 & 000 & 001 & 001\\ \hline
+%     011 & 100 & 000 & 111 & 111 & 001 & 111 & 111 & 100 & 000\\ \hline
+%     011 & 101 & 001 & 111 & 110 & 001 & 000 & 110 & 111 & 000\\ \hline
+%     011 & 110 & 010 & 111 & 101 & 001 & 001 & 101 & 010 & 000\\ \hline
+%     011 & 111 & 011 & 111 & 100 & 001 & 010 & 100 & 101 & 000\\ \hline
+%     100 & 000 & 000 & 100 & 100 & 001 & 100 & 100 & 000 & Divide by zero\\ \hline
+%     100 & 001 & 000 & 101 & 101 & 001 & 101 & 011 & 100 & 100\\ \hline
+%     100 & 010 & 000 & 110 & 110 & 001 & 110 & 010 & 000 & 010\\ \hline
+%     100 & 011 & 000 & 111 & 111 & 001 & 111 & 001 & 100 & 001\\ \hline
+%     100 & 100 & 100 & 100 & 000 & 000 & 000 & 000 & 000 & 001\\ \hline
+%     100 & 101 & 100 & 101 & 001 & 001 & 001 & 111 & 100 & 000\\ \hline
+%     100 & 110 & 100 & 110 & 010 & 001 & 010 & 110 & 000 & 000\\ \hline
+%     100 & 111 & 100 & 111 & 011 & 001 & 011 & 101 & 100 & 000\\ \hline
+%     101 & 000 & 000 & 101 & 101 & 001 & 101 & 101 & 000 & Divide by zero\\ \hline
+%     101 & 001 & 001 & 101 & 100 & 001 & 110 & 100 & 101 & 101\\ \hline
+%     101 & 010 & 000 & 111 & 111 & 001 & 111 & 011 & 010 & 010\\ \hline
+%     101 & 011 & 001 & 111 & 110 & 001 & 000 & 010 & 111 & 001\\ \hline
+%     101 & 100 & 100 & 101 & 001 & 001 & 001 & 001 & 100 & 001\\ \hline
+%     101 & 101 & 101 & 101 & 000 & 000 & 010 & 000 & 001 & 001\\ \hline
+%     101 & 110 & 100 & 111 & 011 & 001 & 011 & 111 & 110 & 000\\ \hline
+%     101 & 111 & 101 & 111 & 010 & 001 & 100 & 110 & 011 & 000\\ \hline
+%     110 & 000 & 000 & 110 & 110 & 001 & 110 & 110 & 000 & Divide by zero\\ \hline
+%     110 & 001 & 000 & 111 & 111 & 001 & 111 & 101 & 110 & 110\\ \hline
+%     110 & 010 & 010 & 110 & 100 & 001 & 000 & 100 & 100 & 011\\ \hline
+%     110 & 011 & 010 & 111 & 101 & 001 & 001 & 011 & 010 & 010\\ \hline
+%     110 & 100 & 100 & 110 & 010 & 001 & 010 & 010 & 000 & 001\\ \hline
+%     110 & 101 & 100 & 111 & 011 & 001 & 011 & 001 & 110 & 001\\ \hline
+%     110 & 110 & 110 & 110 & 000 & 000 & 100 & 000 & 100 & 001\\ \hline
+%     110 & 111 & 110 & 111 & 001 & 001 & 101 & 111 & 010 & 000\\ \hline
+%     111 & 000 & 000 & 111 & 111 & 001 & 111 & 111 & 000 & Divide by zero\\ \hline
+%     111 & 001 & 001 & 111 & 110 & 001 & 000 & 110 & 111 & 111\\ \hline
+%     111 & 010 & 010 & 111 & 101 & 001 & 001 & 101 & 110 & 011\\ \hline
+%     111 & 011 & 011 & 111 & 100 & 001 & 010 & 100 & 101 & 010\\ \hline
+%     111 & 100 & 100 & 111 & 011 & 001 & 011 & 011 & 100 & 001\\ \hline
+%     111 & 101 & 101 & 111 & 010 & 001 & 100 & 010 & 011 & 001\\ \hline
+%     111 & 110 & 110 & 111 & 001 & 001 & 101 & 001 & 010 & 001\\ \hline
+%     111 & 111 & 111 & 111 & 000 & 000 & 110 & 000 & 001 & 001\\ \hline
+%     \end{tabular}
+%     \end{center}
+
+\subsection{Incorret Results}
+An incorrect result, can appear in all of the non primary Operations, namely the ADD, SUB, MUL and DIV. These can be either backtraced to an over or underflow,
+in the case of ADD, SUB or MUl, or are the result of integer truncation and division by 0.
+An overflow, occurs when the result needs more digits than are available, namely if $x \geq 2^n$. An underflow, is the opposite of the overflow and happens when the result
+of the calculation is smaller than the smallest representable number, in our case $x < 0$.
+For a DIV operation, for every operation $x/y$ where $x \mod y \neq 0$ the result is incorrect, as the number system does not represent fractions.
+
+Listing the Conditions for a valid result of the non primary operations on x and y in an n bits system, yields the following List.
+\begin{itemize}
+    \item ADD: \begin{itemize}
+        \item $x + y < 2^n$
+    \end{itemize}
+    \item SUB: \begin{itemize}
+        \item $x \geq y $
+    \end{itemize}
+    \item MUL: \begin{itemize}
+        \item $x * y \leq 2^n$
+    \end{itemize}
+    \item DIV: \begin{itemize}
+        \item $x \mod y = 0$
+        \item $y > 0$
+    \end{itemize}
+\end{itemize}
+
+Applying these Conditions to the given set of numbers, 28 faulty additions, 28 faulty substractions, 33 faulty multiplications and 41 faulty divisions are performed.
+In total $2^{3^{2}} * 8 = 512$ operations are performed, from which $2^{3^{2}} * 4 = 256$ are non primary. This results in an error rate of $25.4 \%$ for all operations
+or respectively an error rate of $50.8 \%$ for all non primary operations.
+
+\subsection{Change due to implemention of $0b111$ as "Undefined"}
+When implementing a specific combination of bits, as the undefined Token ("Undefined"), it has to be considered, what happens when executing operations on "Undefined".
+There are 2 obvious ways of dealing with this. The first one being, to consider every operation involving "Undefined" as the identity operation $ x \mapsto x$.
+On the other hand, it can be defined that every operation involving "Undefined" results in undefined $(x, "Undefined") \mapsto "Undefined"$.
+For the following analysis, the second option is considerd. \par
+Due to the implemention of "Undefined", the representable set of numbers in n bits has shrunken to $2^n -1$, or in our case to $ \{ x \in \ZZ | 0 \leq x \leq 6 \} $.
+However, if we define, that the result of a faulty operation, is "Undefined", the number of incorrect Operations, decreases by definition. While this is holds for amount
+of faulty operations, the amount amount of wrong numerical operations increases, as the Set of correct numerical calculations shrinks because, as amongst other things,
+the condition for correct results in addition shrinks to $x + y < 2^n - 1$ from $x + y < 2^n$.
+
+\subsection{Increasing the length of bits}
+When the numbersystem is increased to represent the set $ \{ x \in \ZZ | 0 \leq x < 2^4 \} $, the number of faulty operations increases to $745$, while the number of 
+performed operations increases to $2^{4^{2}} * 8 = 2048$, which increases the percentage of faulty operations to $36.4 \% $. Respectively for a 5 bit system, ther error
+percentage increases to $40.4 \%$. This trend is very logical, as especially in multiplication, the number of invalid operations, increases considerably faster than the
+numbve rof valid operations. However the amount of valid operations in division increases with a bigger number System. This growth however is not strong enough to counteract
+the increase in invalid operations in multiplication.
+
+\end{document}
