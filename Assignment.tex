@@ -23,7 +23,7 @@ these 2 Systems, is then transferred to bigger combinations of bits.
     \item ADD: The ADD Operation, adds the 2 numbers and truncates them to the last 3 bits, which are represented by the bit sequence
     \item SUB: The SUB Operation, subtracts the 2nd number from the 1st and truncates them to the last 3 bits, which are represented by the bit sequence
     \item MUL: The MUL Operation, multiplies the 2 numbers and truncates them to the last 3 bits, which are represented by the bit sequence
-    \item DIV: The DIV Operation, diviedes the 1st number by the 2nd and truncates them to the last 3 bits, which are represented by the bit sequence
+    \item DIV: The DIV Operation, divides the 1st number by the 2nd and truncates them to the last 3 bits, which are represented by the bit sequence
 \end{itemize}
 
  \subsection{Truth Table}
@@ -130,7 +130,8 @@ Listing the Conditions for a valid result of the non primary operations on x and
 \end{itemize}
 
 Applying these Conditions to the given set of numbers, 28 faulty additions, 28 faulty substractions, 33 faulty multiplications and 41 faulty divisions are performed.
-In total $2^{3^{2}} * 8 = 512$ operations are performed, from which $2^{3^{2}} * 4 = 256$ are non primary. This results in an error rate of $25.4 \%$ for all operations
+%explain how you arrived at this number.
+In total $(2^{3})^{2} * 8 = 512$ operations are performed, from which $(2^{3})^{2} * 4 = 256$ are non primary. This results in an error rate of $25.4 \%$ for all operations
 or respectively an error rate of $50.8 \%$ for all non primary operations.
 
 \subsection{Change due to implemention of $0b111$ as "Undefined"}
@@ -140,14 +141,14 @@ On the other hand, it can be defined that every operation involving "Undefined" 
 For the following analysis, the second option is considerd. \par
 Due to the implemention of "Undefined", the representable set of numbers in n bits has shrunken to $2^n -1$, or in our case to $ \{ x \in \ZZ | 0 \leq x \leq 6 \} $.
 However, if we define, that the result of a faulty operation, is "Undefined", the number of incorrect Operations, decreases by definition. While this is holds for amount
-of faulty operations, the amount amount of wrong numerical operations increases, as the Set of correct numerical calculations shrinks because, as amongst other things,
+of faulty operations, the amount of wrong numerical operations increases, as the Set of correct numerical calculations shrinks because, as amongst other things,
 the condition for correct results in addition shrinks to $x + y < 2^n - 1$ from $x + y < 2^n$.
 
 \subsection{Increasing the length of bits}
 When the numbersystem is increased to represent the set $ \{ x \in \ZZ | 0 \leq x < 2^4 \} $, the number of faulty operations increases to $745$, while the number of 
 performed operations increases to $2^{4^{2}} * 8 = 2048$, which increases the percentage of faulty operations to $36.4 \% $. Respectively for a 5 bit system, ther error
 percentage increases to $40.4 \%$. This trend is very logical, as especially in multiplication, the number of invalid operations, increases considerably faster than the
-numbve rof valid operations. However the amount of valid operations in division increases with a bigger number System. This growth however is not strong enough to counteract
-the increase in invalid operations in multiplication.
+number of valid operations. However the amount of valid operations in division increases with a bigger number system. This growth however is not strong enough to counteract
+the increase in invalid operations in multiplication, hence an increase in percentual errors is observed.
 
 \end{document}
